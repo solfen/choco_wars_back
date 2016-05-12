@@ -102,6 +102,8 @@
 			"marketingBudget" => $decisions["marketingBudget"], 
 			"placement" => $placement
 		));
+
+		echo json_encode($return);
 	}
 	catch (PDOExeption $e) {
 		errorMsg($e->getMessage());
@@ -117,6 +119,6 @@
 			$cost += $decisions["place"][$i]["stallQuantity"] * $gameData["mapDistricts"][$decisions["place"][$i]["mapDistrictIndex"]]["stallPrice"];
 		}
 
-		return $fric - $cost > $gameData["maximunAmounts"]["overdraft"];
+		return $fric - $cost > -$gameData["maximunAmounts"]["overdraft"];
 	}
 ?>

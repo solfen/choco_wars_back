@@ -6,6 +6,7 @@
 	$connexion = new PDO($source, $user, $pwd);
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$timeData = array();
 
 	try {
 		$request = $connexion->prepare("SELECT `ID`, `TimeStart`, `CurrentRound` FROM `chocowars_games` WHERE 1 ORDER BY `ID` DESC LIMIT 1");
@@ -13,21 +14,23 @@
 		if ($request->rowCount() > 0) {
 			$result = $request->fetchAll(PDO::FETCH_ASSOC)[0];
 
-			$timeLeft = $gameData["roundDuration"]*$result["CurrentRound"] - (time() - strtotime($result["TimeStart"]));
+			$timeData["timeLeft"] = $gameData["roundDuration"]*$result["CurrentRound"] - (time() - strtotime($result["TimeStart"]));
+			$timeData["round"] = $result["CurrentRound"];
 
 			//TODO: test if round number is not one too much
 			if($result["CurrentRound"] <= $gameData["roundsNb"]) {
-				if($timeLeft <= 0) {
+				if($timeData["timeLeft"] <= 0) {
 					$request = $connexion->prepare("UPDATE `chocowars_games` SET `CurrentRound`= (`CurrentRound`+1) WHERE ID = :id");
 					$request->execute(array('id' => $result["ID"] ));
 					roundEnd($connexion);
+					$timeData["round"] = $result["CurrentRound"]+1;
 				}
 
-				$return["message"] = $timeLeft;
+				$return["message"] = $timeData;
 				echo json_encode($return);
 			}
 			else {
-				errorMsg("Game end");
+				errorMsg("Game over");
 			}
 		}
 		else {

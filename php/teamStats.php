@@ -1,12 +1,12 @@
 <?php
 	include "config.php";
-	$_POST["token"] = "41j44vicu3d9uk3qvff8170ss4";
+	//$_GET["token"] = "41j44vicu3d9uk3qvff8170ss4";
 
-	if(empty($_POST["token"])) {
+	if(empty($_GET["token"])) {
 		errorMsg("Token is requiered");
 	}
 
-	session_id($_POST["token"]);
+	session_id($_GET["token"]);
 	session_start();
 
 	if(!isset($_SESSION["teamID"])) {

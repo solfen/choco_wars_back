@@ -1,7 +1,7 @@
 <?php
 	$jsonConfig = 
 	'{
-		"initialFinances": 300,
+		"initialFinances": 2000,
 		"roundDuration": 300,
 		"roundsNb" : 10,
 		"maximunAmounts": {
@@ -43,6 +43,7 @@
 			{ 
 				"name": "A",
 				"stallPrice": 300,
+				"maxStallNb": 15,
 				"totalPopulation" : 9001,
 				"population": [
 					{
@@ -58,6 +59,23 @@
 			{ 
 				"name": "B",
 				"stallPrice": 500,
+				"maxStallNb": 10,
+				"totalPopulation" : 9001,
+				"population": [
+					{
+						"typeName": "A",
+						"quantity": 0.5
+					},
+					{
+						"typeName": "B",
+						"quantity": 0.5
+					}
+				]
+			},
+			{ 
+				"name": "C",
+				"stallPrice": 500,
+				"maxStallNb": 10,
 				"totalPopulation" : 9001,
 				"population": [
 					{

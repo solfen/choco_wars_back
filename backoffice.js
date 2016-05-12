@@ -33,9 +33,12 @@ function timeLeft() {
 function timeLeftReturn(res) {
 	res = JSON.parse(res);
 
-	if(typeof(res.message) == "number") {
-		res.message = (res.message / 60 | 0) + "min  " + res.message % 60 + "sec";
+	document.getElementById("timeLeft").innerHTML = res.message;
+
+	if(res.statusCode == 200 && res.message.timeLeft) {
+		res.message.timeLeft = (res.message.timeLeft / 60 | 0) + "min  " + res.message.timeLeft % 60 + "sec";
+		document.getElementById("timeLeft").innerHTML = "Round: " + res.message.round + "<br>Time Left: " + res.message.timeLeft;
 	}
-	document.getElementById("timeLeft").innerHTML = "Time Left to next round: " + res.message;
+
 	window.setTimeout(timeLeft, 1000);
 }

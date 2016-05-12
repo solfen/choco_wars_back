@@ -18,6 +18,10 @@
 	try {
 		$request = $connexion->prepare("INSERT INTO `chocowars_games`(`ID`, `CurrentRound`) VALUES ('',1)");
 		$request->execute();
+		$request = $connexion->prepare("TRUNCATE `chocowars_teamresults`");
+		$request->execute();
+		$request = $connexion->prepare("UPDATE `chocowars_districts` SET `MinPrice`=0,`MaxMarketingBudget`=:maxMarketing,`MaxQualityBudget`=:maxQuality,`TeamsRepartition`='' WHERE 1");
+		$request->execute(array("maxMarketing" => $gameData["maximunAmounts"]["marketingBudget"], "maxQuality" => $gameData["maximunAmounts"]["qualityBudget"]));
 	}
 	catch (PDOExeption $e) {
 		errorMsg($e->getMessage());
