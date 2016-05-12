@@ -7,6 +7,8 @@
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+	//TODO regex alpha num
+
 	if(empty($_GET['teamName']) || empty($_GET['pwd'])) {
 		$return["statusCode"] = 400;
 		$return["message"] = "Team name and password are required ". "name: " . $_GET['teamName'] . " pwd: " .  $_GET['pwd'];

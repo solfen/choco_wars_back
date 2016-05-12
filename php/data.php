@@ -5,9 +5,9 @@
 		"roundDuration": 300,
 		"roundsNb" : 10,
 		"maximunAmounts": {
-			"qualityBudget": 300,
+			"qualityBudget": 1500,
 			"productPrice": 300,
-			"marketingBudget": 300,
+			"marketingBudget": 1500,
 			"overdraft": 300
 		},
 		"customers": {

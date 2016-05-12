@@ -34,13 +34,13 @@
 		errorMsg("Invalid json format. Json needs the keys: 'price', 'qualityBudget', 'marketingBudget' and 'place'");
 	}
 
-	if($decisions["price"] < 0 || > $gameData["maximunAmounts"]["productPrice"]) {
+	if($decisions["price"] <= 0 || $decisions["price"] > $gameData["maximunAmounts"]["productPrice"]) {
 		errorMsg("Price is not in an acceptable range");
 	}
-	if($decisions["qualityBudget"] < 0 || $decisions["qualityBudget"] > $gameData["maximunAmounts"]["qualityBudget"]) {
+	if($decisions["qualityBudget"] <= 0 || $decisions["qualityBudget"] > $gameData["maximunAmounts"]["qualityBudget"]) {
 		errorMsg("Quality budget is not in an acceptable range");
 	}
-	if($decisions["marketingBudget"] < 0 || $decisions["marketingBudget"] > $gameData["maximunAmounts"]["marketingBudget"]) {
+	if($decisions["marketingBudget"] <= 0 || $decisions["marketingBudget"] > $gameData["maximunAmounts"]["marketingBudget"]) {
 		errorMsg("Marketing budget is not in an acceptable range");
 	}
 
@@ -48,7 +48,12 @@
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+	if(!canAfford($connexion, $decisions, $gameData)) {
+		errorMsg("You don't have enough money!");
+	}
+
 	$placement = "";
+
 	try {
 		$request = $connexion->prepare("SELECT * FROM `chocowars_districts` WHERE `Index` = :id");
 		$request2 = $connexion->prepare("UPDATE `chocowars_districts` SET `MinPrice`=:minPrice,`MaxMarketingBudget`=:maxMarketing,`MaxQualityBudget`=:maxQuality,`TeamsRepartition`=:teamsRepartition WHERE `Index` = :id");
@@ -100,5 +105,18 @@
 	}
 	catch (PDOExeption $e) {
 		errorMsg($e->getMessage());
+	}
+
+	function canAfford($connexion, $decisions, $gameData) {
+		$request = $connexion->prepare("SELECT `Earnings` FROM `chocowars_teamresults` WHERE `TeamID` = :id ORDER BY `ID` DESC LIMIT 1");
+		$request->execute(array("id" => $_SESSION["teamID"]));
+		$fric = $request->rowCount() > 0 ? $request->fetchAll(PDO::FETCH_ASSOC)[0]["Earnings"] : $gameData["initialFinances"];
+
+		$cost = $decisions["qualityBudget"] + $decisions["marketingBudget"];
+		for($i = 0; $i < count($decisions["place"]); $i++) {
+			$cost += $decisions["place"][$i]["stallQuantity"] * $gameData["mapDistricts"][$decisions["place"][$i]["mapDistrictIndex"]]["stallPrice"];
+		}
+
+		return $fric - $cost > $gameData["maximunAmounts"]["overdraft"];
 	}
 ?>
