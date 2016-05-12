@@ -1,0 +1,37 @@
+
+<head>
+	<meta charset="utf-8">
+	<title>Back Office</title>
+	<link href="bootstrap.min.css" rel="stylesheet" type='text/css'/>
+</head>
+<body onload="timeLeft()">
+	<h1 class="jumbotron text-center">COMMAND CENTER</h1>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<h1 id="timeLeft" class="text-center">Time Left to next round: 30sec</h1>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-12">
+			<h1 class="text-center">Start new game</h1>
+		</div>
+		<div class="col-sm-12 text-center">
+			<button type="button" class="btn btn-primary btn-lg" onclick="startNewGame()">START GAME</button>
+		</div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="col-sm-12">
+			<h1 class="text-center">Go to next round</h1>
+		</div>
+		<div class="col-sm-12 text-center">
+			<button type="button" class="btn btn-primary btn-lg" onclick="endRound()">GO</button>
+		</div>
+	</div>
+
+	<script type="text/javascript" src='dataBaseAcces.js'></script>
+	<script type="text/javascript" src='backoffice.js'></script>
+
+</body>
