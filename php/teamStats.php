@@ -1,6 +1,6 @@
 <?php
 	include "config.php";
-	//$_GET["token"] = "41j44vicu3d9uk3qvff8170ss4";
+	//$_GET["token"] = "ekovhortac2l9ebn2659kojo31";
 
 	if(empty($_GET["token"])) {
 		errorMsg("Token is requiered");
@@ -18,11 +18,10 @@
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$request = $connexion->prepare("SELECT `Round`, `Price`,`QualityBudget`,`MarketingBudget`,`Placement`, `Turnover`, `Earnings`, `chocowars_teams`.`Name` FROM `chocowars_teamresults` JOIN `chocowars_teams` ON `TeamID` = `chocowars_teams`.`ID` WHERE `TeamID` = :id && `Turnover` != 0 && `Earnings` != 0");
+	$request = $connexion->prepare("SELECT `Round`, `Price`,`QualityBudget`,`MarketingBudget`,`Placement`, `Turnover`, `Earnings`, `chocowars_teams`.`Name` FROM `chocowars_teamresults` JOIN `chocowars_teams` ON `TeamID` = `chocowars_teams`.`ID` WHERE `TeamID` = :id");
 	$request->execute(array("id" => $_SESSION["teamID"]));
 	if ($request->rowCount() > 0) {
 		$result = $request->fetchAll(PDO::FETCH_ASSOC);
-
 		$formatedData = array("teamName" => $result[0]["Name"], "statistics" => []);
 
 		for($i = 0; $i < count($result); $i++) {

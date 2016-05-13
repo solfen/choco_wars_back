@@ -5,7 +5,7 @@
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$request = $connexion->prepare("SELECT `Round`,`Turnover`, `Earnings`, `chocowars_teams`.`Name` FROM `chocowars_teamresults` JOIN `chocowars_teams` ON `TeamID` = `chocowars_teams`.`ID` WHERE 1 ");
+	$request = $connexion->prepare("SELECT `Round`,`Turnover`, `Earnings`, `chocowars_teams`.`Name` FROM `chocowars_teamresults` JOIN `chocowars_teams` ON `TeamID` = `chocowars_teams`.`ID` WHERE `Turnover` != 0 && `Earnings` != 0 ");
 	$request->execute();
 	if ($request->rowCount() > 0) {
 		$result = $request->fetchAll(PDO::FETCH_ASSOC);
