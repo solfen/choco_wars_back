@@ -14,6 +14,7 @@
 				}
 
 				$request = $connexion->prepare("UPDATE `chocowars_teamresults` SET `Turnover`= :turnOver, `Earnings`= :earnings WHERE `ID` = :id");
+				$altRequest = $connexion->prepare("INSERT INTO `chocowars_teamresults`(`ID`, `TeamID`, `Round`, `Price`, `QualityBudget`, `MarketingBudget`, `Placement`, `Turnover`, `Earnings`) VALUES ('', :teamID, (SELECT `CurrentRound` FROM `chocowars_games` WHERE 1 ORDER BY `ID` DESC LIMIT 1)-1, :price, :qualityBudget, :marketingBudget, :placement, :turnOver, :earnings)");
 
 				for($i = 0; $i < count($teamDecisions); $i++) {
 					$turnOver = 0;
@@ -41,8 +42,20 @@
 							$turnOver += $consumersAtractedPerecent * $districtMarketShare * $popType["quantity"] * $gameData["mapDistricts"][$districts[$j]["Index"]]["totalPopulation"] * $teamDecisions[$i]["Price"];
 						}	
 					}
-					
-					$request->execute(array("turnOver" => $turnOver, "earnings" => $turnOver-$costs, "id" => $teamDecisions[$i]["ID"]));
+					if($teamDecisions[$i]["Turnover"] != 0 || $teamDecisions[$i]["Earnings"] != 0) {
+						$altRequest->execute(array(
+							"teamID" => $_SESSION["teamID"], 
+							"price" => $teamDecisions[$i]["Price"], 
+							"qualityBudget" => $teamDecisions[$i]["QualityBudget"], 
+							"marketingBudget" => $teamDecisions[$i]["MarketingBudget"], 
+							"placement" => $teamDecisions[$i]["Placement"],
+							"turnOver" => $turnOver, 
+							"earnings" => $turnOver-$costs
+						));
+					}
+					else {
+						$request->execute(array("turnOver" => $turnOver, "earnings" => $turnOver-$costs, "id" => $teamDecisions[$i]["ID"]));
+					}
 				}
 			}
 		}

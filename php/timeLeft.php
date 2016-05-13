@@ -16,7 +16,6 @@
 			$timeData["timeLeft"] = $gameData["roundDuration"]*$result["CurrentRound"] - (time() - strtotime($result["TimeStart"]));
 			$timeData["round"] = $result["CurrentRound"];
 
-			//TODO: test if round number is not one too much
 			if($result["CurrentRound"] <= $gameData["roundsNb"]) {
 				$return["message"] = $timeData;
 				echo json_encode($return);
