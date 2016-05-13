@@ -44,7 +44,7 @@
 					}
 					if($teamDecisions[$i]["Turnover"] != 0 || $teamDecisions[$i]["Earnings"] != 0) {
 						$altRequest->execute(array(
-							"teamID" => $_SESSION["teamID"], 
+							"teamID" => $teamDecisions[$i]["TeamID"], 
 							"price" => $teamDecisions[$i]["Price"], 
 							"qualityBudget" => $teamDecisions[$i]["QualityBudget"], 
 							"marketingBudget" => $teamDecisions[$i]["MarketingBudget"], 
