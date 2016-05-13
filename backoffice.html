@@ -3,31 +3,50 @@
 	<meta charset="utf-8">
 	<title>Back Office</title>
 	<link href="bootstrap.min.css" rel="stylesheet" type='text/css'/>
+    <style> .pp { padding: 14px } </style>
 </head>
 <body onload="timeLeft()">
 	<h1 class="jumbotron text-center">COMMAND CENTER</h1>
 
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm-12 well">
 			<h1 id="timeLeft" class="text-center">Time Left to next round: 30sec</h1>
 		</div>
 	</div>
-	<br>
-	<div class="row">
-		<div class="col-sm-12">
+	<div class="row well">
+		<div class="col-sm-4">
 			<h1 class="text-center">Start new game</h1>
 		</div>
-		<div class="col-sm-12 text-center">
-			<button type="button" class="btn btn-primary btn-lg" onclick="startNewGame()">START GAME</button>
+		<div class="col-sm-8 text-center pp">
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="startNewGame()">START GAME</button>
 		</div>
 	</div>
-	<br><br>
-	<div class="row">
-		<div class="col-sm-12">
+    <div class="row well">
+		<div class="col-sm-4">
+			<h1 class="text-center">End current game</h1>
+		</div>
+		<div class="col-sm-8 text-center pp">
+			<button type="button" class="btn btn-danger btn-lg btn-block" onclick="endGame()">END GAME</button>
+		</div>
+	</div>
+	<div class="row well">
+		<div class="col-sm-4">
 			<h1 class="text-center">Go to next round</h1>
 		</div>
+		<div class="col-sm-8 text-center pp">
+			<button type="button" class="btn btn-success btn-lg btn-block" onclick="endRound()">GO</button>
+		</div>
+	</div>
+	<div class="row well">
 		<div class="col-sm-12 text-center">
-			<button type="button" class="btn btn-primary btn-lg" onclick="endRound()">GO</button>
+			<h1>Argent à ajouter à toutes les équipes :</h1>
+		</div>
+		<div class="col-sm-1"></div>
+		<div class="col-sm-6 text-center">
+            <input id="fricToAddInput" class="form-control input-lg" type="number" placeholder="money (+/-)" />
+		</div>
+		<div class="col-sm-5 text-center">
+            <button type="button" class="btn btn-danger btn-lg btn-block" onclick="addFricToAll()">ADD $</button>
 		</div>
 	</div>
 
