@@ -22,6 +22,7 @@
 		if ($request->rowCount() == 0) {
 			$request = $connexion->prepare("INSERT INTO `chocowars_teams`(`ID`, `Name`, `Password`) VALUES ('', :name, :pwd)");
 			$request->execute(array('name'=>$_GET['teamName'], 'pwd' => password_hash($_GET['pwd'], PASSWORD_DEFAULT)));
+			session_start();
 			$_SESSION["teamID"] = $connexion->lastInsertId();
 			$return["message"] = session_id();
 		}

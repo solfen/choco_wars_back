@@ -18,7 +18,7 @@
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	$request = $connexion->prepare("SELECT `Round`, `Price`,`QualityBudget`,`MarketingBudget`,`Placement`, `Turnover`, `Earnings`, `chocowars_teams`.`Name` FROM `chocowars_teamresults` JOIN `chocowars_teams` ON `TeamID` = `chocowars_teams`.`ID` WHERE `TeamID` = :id");
+	$request = $connexion->prepare("SELECT `Round`, `Price`,`QualityBudget`,`MarketingBudget`,`Placement`, `Turnover`, `Earnings`, `chocowars_teams`.`Name` FROM `chocowars_teamresults` JOIN `chocowars_teams` ON `TeamID` = `chocowars_teams`.`ID` WHERE `TeamID` = :id && `Turnover` != 0 && `Earnings` != 0");
 	$request->execute(array("id" => $_SESSION["teamID"]));
 	if ($request->rowCount() > 0) {
 		$result = $request->fetchAll(PDO::FETCH_ASSOC);
@@ -43,9 +43,9 @@
 			}
 
 			array_push($formatedData["statistics"], $decision);
+			$return["message"] = $formatedData;
 		}
-
-		$return["message"] = $formatedData;
-		echo json_encode($return);
 	}
+
+	echo json_encode($return);
 ?>
