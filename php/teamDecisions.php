@@ -30,7 +30,7 @@
 	}
 
 	$decisions = json_decode($_POST["decisions"], true);
-	if(empty($decisions["price"]) || empty($decisions["qualityBudget"]) || empty($decisions["marketingBudget"]) || empty($decisions["place"]) ) {
+	if(empty($decisions["price"]) || empty($decisions["qualityBudget"]) || empty($decisions["marketingBudget"]) || !isset($decisions["place"]) ) {
 		errorMsg("Invalid json format. Json needs the keys: 'price', 'qualityBudget', 'marketingBudget' and 'place'");
 	}
 
@@ -42,6 +42,9 @@
 	}
 	if($decisions["marketingBudget"] <= 0 || $decisions["marketingBudget"] > $gameData["maximunAmounts"]["marketingBudget"]) {
 		errorMsg("Marketing budget is not in an acceptable range");
+	}
+	if(count($decisions["place"]) == 0) {
+		errorMsg("You need to have at least one stall. Use the map to rent some.");
 	}
 
 	$connexion = new PDO($source, $user, $pwd);

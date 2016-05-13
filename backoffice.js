@@ -26,6 +26,16 @@ function endRoundReturn(res) {
 	}
 }
 
+function endGame() {
+	if(confirm("Are you sure ? it will end the current game.")) {
+		DBAccess('endGame', 'POST', '', startingReturn);
+	}
+}
+
+function addFricToAll() {
+	DBAccess('addFric', 'POST', 'fric=' + fricToAddInput.value, startingReturn);
+}
+
 function timeLeft() {
 	DBAccess('timeLeft', 'POST', '', timeLeftReturn);
 }
