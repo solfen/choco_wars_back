@@ -1,7 +1,6 @@
 <?php
 	include 'config.php';
 	include 'data.php';
-	include 'roundEnd.php';
 
 	$connexion = new PDO($source, $user, $pwd);
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
@@ -19,13 +18,6 @@
 
 			//TODO: test if round number is not one too much
 			if($result["CurrentRound"] <= $gameData["roundsNb"]) {
-				if($timeData["timeLeft"] <= 0) {
-					$request = $connexion->prepare("UPDATE `chocowars_games` SET `CurrentRound`= (`CurrentRound`+1) WHERE ID = :id");
-					$request->execute(array('id' => $result["ID"] ));
-					roundEnd($connexion);
-					$timeData["round"] = $result["CurrentRound"]+1;
-				}
-
 				$return["message"] = $timeData;
 				echo json_encode($return);
 			}

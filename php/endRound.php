@@ -1,6 +1,7 @@
 <?php
 	include 'config.php';
 	include 'data.php';
+	include 'roundEnd.php';
 
 	session_start();
 	$_SESSION["root"] = true;
@@ -20,11 +21,14 @@
 		$request->execute();
 		if ($request->rowCount() > 0) {
 			$result = $request->fetchAll(PDO::FETCH_ASSOC)[0];
-
 			$timeToAdd = $gameData["roundDuration"]*$result["CurrentRound"] - (time() - strtotime($result["TimeStart"]));
 
 			$request = $connexion->prepare("UPDATE `chocowars_games` SET `TimeStart`= DATE_ADD(`TimeStart`, INTERVAL -:time second) WHERE ID = :id");
 			$request->execute(array('time' => $timeToAdd, 'id' => $result["ID"] ));
+
+			$request = $connexion->prepare("UPDATE `chocowars_games` SET `CurrentRound`= (`CurrentRound`+1) WHERE ID = :id");
+			$request->execute(array('id' => $result["ID"] ));
+			roundEnd($connexion);
 		}
 	}
 	catch (PDOExeption $e) {
