@@ -50,8 +50,8 @@
 	$connexion = new PDO($source, $user, $pwd);
 	$connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-	if(!canAfford($connexion, $decisions, $gameData)) {
+	$fric = calcCapital($connexion, $decisions, $gameData);
+	if($fric < -$gameData["maximunAmounts"]["overdraft"]) {
 		errorMsg("You don't have enough money!");
 	}
 
@@ -97,13 +97,14 @@
 	}
 
 	try {
-		$request = $connexion->prepare("INSERT INTO `chocowars_teamresults`(`ID`, `TeamID`, `Round`, `Price`, `QualityBudget`, `MarketingBudget`, `Placement`, `Turnover`, `Earnings`) VALUES ('', :teamID, (SELECT `CurrentRound` FROM `chocowars_games` WHERE 1 ORDER BY `ID` DESC LIMIT 1), :price, :qualityBudget, :marketingBudget, :placement, '', '')");
+		$request = $connexion->prepare("INSERT INTO `chocowars_teamresults`(`ID`, `TeamID`, `Round`, `Price`, `QualityBudget`, `MarketingBudget`, `Placement`, `Turnover`, `Earnings`, `Capital`) VALUES ('', :teamID, (SELECT `CurrentRound` FROM `chocowars_games` WHERE 1 ORDER BY `ID` DESC LIMIT 1), :price, :qualityBudget, :marketingBudget, :placement, '', '', :capital)");
 		$request->execute(array(
 			"teamID" => $_SESSION["teamID"], 
 			"price" => $decisions["price"], 
 			"qualityBudget" => $decisions["qualityBudget"], 
 			"marketingBudget" => $decisions["marketingBudget"], 
-			"placement" => $placement
+			"placement" => $placement,
+			"capital" => $fric
 		));
 
 		echo json_encode($return);
@@ -112,16 +113,16 @@
 		errorMsg($e->getMessage());
 	}
 
-	function canAfford($connexion, $decisions, $gameData) {
-		$request = $connexion->prepare("SELECT `Earnings` FROM `chocowars_teamresults` WHERE `TeamID` = :id ORDER BY `ID` DESC LIMIT 1");
+	function calcCapital($connexion, $decisions, $gameData) {
+		$request = $connexion->prepare("SELECT `Capital` FROM `chocowars_teamresults` WHERE `TeamID` = :id ORDER BY `ID` DESC LIMIT 1");
 		$request->execute(array("id" => $_SESSION["teamID"]));
-		$fric = $request->rowCount() > 0 ? $request->fetchAll(PDO::FETCH_ASSOC)[0]["Earnings"] : $gameData["initialFinances"];
+		$fric = $request->rowCount() > 0 ? $request->fetchAll(PDO::FETCH_ASSOC)[0]["Capital"] : $gameData["initialFinances"];
 
 		$cost = $decisions["qualityBudget"] + $decisions["marketingBudget"];
 		for($i = 0; $i < count($decisions["place"]); $i++) {
 			$cost += $decisions["place"][$i]["stallQuantity"] * $gameData["mapDistricts"][$decisions["place"][$i]["mapDistrictIndex"]]["stallPrice"];
 		}
 
-		return $fric - $cost > -$gameData["maximunAmounts"]["overdraft"];
+		return $fric - $cost;
 	}
 ?>

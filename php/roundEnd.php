@@ -13,8 +13,8 @@
 					$districts = $request->fetchAll(PDO::FETCH_ASSOC);
 				}
 
-				$request = $connexion->prepare("UPDATE `chocowars_teamresults` SET `Turnover`= :turnOver, `Earnings`= :earnings WHERE `ID` = :id");
-				$altRequest = $connexion->prepare("INSERT INTO `chocowars_teamresults`(`ID`, `TeamID`, `Round`, `Price`, `QualityBudget`, `MarketingBudget`, `Placement`, `Turnover`, `Earnings`) VALUES ('', :teamID, (SELECT `CurrentRound` FROM `chocowars_games` WHERE 1 ORDER BY `ID` DESC LIMIT 1)-1, :price, :qualityBudget, :marketingBudget, :placement, :turnOver, :earnings)");
+				$request = $connexion->prepare("UPDATE `chocowars_teamresults` SET `Turnover`= :turnOver, `Earnings`= :earnings, `Capital` = `Capital` + :turnOver2 WHERE `ID` = :id");
+				$altRequest = $connexion->prepare("INSERT INTO `chocowars_teamresults`(`ID`, `TeamID`, `Round`, `Price`, `QualityBudget`, `MarketingBudget`, `Placement`, `Turnover`, `Earnings`, `Capital`) VALUES ('', :teamID, (SELECT `CurrentRound` FROM `chocowars_games` WHERE 1 ORDER BY `ID` DESC LIMIT 1)-1, :price, :qualityBudget, :marketingBudget, :placement, :turnOver, :earnings, :capital)");
 
 				for($i = 0; $i < count($teamDecisions); $i++) {
 					$turnOver = 0;
@@ -50,11 +50,12 @@
 							"marketingBudget" => $teamDecisions[$i]["MarketingBudget"], 
 							"placement" => $teamDecisions[$i]["Placement"],
 							"turnOver" => $turnOver, 
-							"earnings" => $turnOver-$costs
+							"earnings" => $turnOver-$costs,
+							"capital" => $teamDecisions[$i]["Capital"]+$turnOver
 						));
 					}
 					else {
-						$request->execute(array("turnOver" => $turnOver, "earnings" => $turnOver-$costs, "id" => $teamDecisions[$i]["ID"]));
+						$request->execute(array("turnOver" => $turnOver, "turnOver2" => $turnOver, "earnings" => $turnOver-$costs, "id" => $teamDecisions[$i]["ID"]));
 					}
 				}
 			}
