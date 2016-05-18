@@ -83,8 +83,8 @@
 			$request2->execute(array(
 				"id" => $decisions["place"][$i]["mapDistrictIndex"],
 				"minPrice" => $minPrice,
-				"maxMarketing" => $maxQuality,
-				"maxQuality" => $maxMarketingBudget,
+				"maxMarketing" => $maxMarketingBudget,
+				"maxQuality" => $maxQuality,
 				"teamsRepartition" => $teamsRepartition
 			));
 

@@ -20,8 +20,8 @@
 		$request->execute();
 		$request = $connexion->prepare("TRUNCATE `chocowars_teamresults`");
 		$request->execute();
-		$request = $connexion->prepare("UPDATE `chocowars_districts` SET `MinPrice`=0,`MaxMarketingBudget`=:maxMarketing,`MaxQualityBudget`=:maxQuality,`TeamsRepartition`='' WHERE 1");
-		$request->execute(array("maxMarketing" => $gameData["maximunAmounts"]["marketingBudget"], "maxQuality" => $gameData["maximunAmounts"]["qualityBudget"]));
+		$request = $connexion->prepare("UPDATE `chocowars_districts` SET `MinPrice`=:maxPrice,`MaxMarketingBudget`=0,`MaxQualityBudget`=0,`TeamsRepartition`='' WHERE 1");
+		$request->execute(array("maxPrice" => $gameData["maximunAmounts"]["productPrice"]));
 	}
 	catch (PDOExeption $e) {
 		errorMsg($e->getMessage());
