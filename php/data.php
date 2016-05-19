@@ -15,7 +15,7 @@
 				"priceSensitivity": 100,
 				"qualitySensitivity": 15,
 				"marketingSensitivity": 35,
-				"maxPrice": 3,
+				"maxPrice": 2,
 				"minQuality": 1523,
 				"minMaketing": 3574
 			},
@@ -24,7 +24,7 @@
 				"priceSensitivity": 51,
 				"qualitySensitivity": 53,
 				"marketingSensitivity": 52,
-				"maxPrice": 5.2,
+				"maxPrice": 5.1,
 				"minQuality": 5086,
 				"minMaketing": 4999
 			},
@@ -40,7 +40,7 @@
 		},
 		"mapDistricts": [{
 			"name": "Bronx",
-			"stallPrice": 100,
+			"stallPrice": 800,
 			"maxStallNb": 20,
 			"totalPopulation": 9100,
 			"population": [{
@@ -55,7 +55,7 @@
 			}]
 		}, {
 			"name": "Brooklyn",
-			"stallPrice": 300,
+			"stallPrice": 1856,
 			"maxStallNb": 20,
 			"totalPopulation": 6290,
 			"population": [{
@@ -70,7 +70,7 @@
 			}]
 		}, {
 			"name": "Wall_street",
-			"stallPrice": 800,
+			"stallPrice": 2320,
 			"maxStallNb": 20,
 			"totalPopulation": 4680,
 			"population": [{
