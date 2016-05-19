@@ -40,9 +40,9 @@
 		},
 		"mapDistricts": [{
 			"name": "Bronx",
-			"stallPrice": 800,
+			"stallPrice": 850,
 			"maxStallNb": 20,
-			"totalPopulation": 9100,
+			"totalPopulation": 9000,
 			"population": [{
 				"typeName": "A",
 				"quantity": 0.79
@@ -55,9 +55,9 @@
 			}]
 		}, {
 			"name": "Brooklyn",
-			"stallPrice": 1856,
+			"stallPrice": 2040,
 			"maxStallNb": 20,
-			"totalPopulation": 6290,
+			"totalPopulation": 6200,
 			"population": [{
 				"typeName": "A",
 				"quantity": 0.15
@@ -70,9 +70,9 @@
 			}]
 		}, {
 			"name": "Wall_street",
-			"stallPrice": 2320,
+			"stallPrice": 2465,
 			"maxStallNb": 20,
-			"totalPopulation": 4680,
+			"totalPopulation": 4500,
 			"population": [{
 				"typeName": "A",
 				"quantity": 0.05

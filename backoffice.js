@@ -33,7 +33,9 @@ function endGame() {
 }
 
 function addFricToAll() {
-	DBAccess('addFric', 'POST', 'fric=' + fricToAddInput.value, startingReturn);
+	if(confirm("Are you sure ?")) {
+        DBAccess('addFric', 'POST', 'fric=' + fricToAddInput.value, startingReturn);
+	}
 }
 
 function timeLeft() {
